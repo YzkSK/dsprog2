@@ -13,8 +13,8 @@ class CalcButton(ft.ElevatedButton):
 class DigitButton(CalcButton):
     def __init__(self, text, button_clicked, expand=1):
         CalcButton.__init__(self, text, button_clicked, expand)
-        self.bgcolor = ft.colors.WHITE24
-        self.color = ft.colors.WHITE
+        self.bgcolor = ft.colors.WHITE
+        self.color = ft.colors.BLACK
 
 
 class ActionButton(CalcButton):
@@ -27,7 +27,7 @@ class ActionButton(CalcButton):
 class ExtraActionButton(CalcButton):
     def __init__(self, text, button_clicked):
         CalcButton.__init__(self, text, button_clicked)
-        self.bgcolor = ft.colors.BLUE_GREY_100
+        self.bgcolor = ft.colors.GREY_500
         self.color = ft.colors.BLACK
 
 
@@ -40,8 +40,8 @@ class CalculatorApp(ft.Container):
         self.result = ft.Text(value="0", color=ft.colors.WHITE, size=20)
         self.width = 350
         self.bgcolor = ft.colors.BLACK
-        self.border_radius = ft.border_radius.all(20)
-        self.padding = 20
+        self.border_radius = ft.border_radius.all(15)
+        self.padding = 15
         self.content = ft.Column(
             controls=[
                 ft.Row(controls=[self.result], alignment="end"),
@@ -54,7 +54,7 @@ class CalculatorApp(ft.Container):
                             text="+/-", button_clicked=self.button_clicked
                         ),
                         ExtraActionButton(text="%", button_clicked=self.button_clicked),
-                        ActionButton(text="/", button_clicked=self.button_clicked),
+                        ActionButton(text="÷", button_clicked=self.button_clicked),
                     ]
                 ),
                 ft.Row(
@@ -62,7 +62,7 @@ class CalculatorApp(ft.Container):
                         DigitButton(text="7", button_clicked=self.button_clicked),
                         DigitButton(text="8", button_clicked=self.button_clicked),
                         DigitButton(text="9", button_clicked=self.button_clicked),
-                        ActionButton(text="*", button_clicked=self.button_clicked),
+                        ActionButton(text="×", button_clicked=self.button_clicked),
                     ]
                 ),
                 ft.Row(
@@ -107,7 +107,7 @@ class CalculatorApp(ft.Container):
             else:
                 self.result.value = self.result.value + data
 
-        elif data in ("+", "-", "*", "/"):
+        elif data in ("+", "-", "×", "÷"):
             self.result.value = self.calculate(
                 self.operand1, float(self.result.value), self.operator
             )
@@ -153,14 +153,18 @@ class CalculatorApp(ft.Container):
         elif operator == "-":
             return self.format_number(operand1 - operand2)
 
-        elif operator == "*":
+        elif operator == "×":
             return self.format_number(operand1 * operand2)
 
-        elif operator == "/":
+        elif operator == "÷":
             if operand2 == 0:
                 return "Error"
             else:
                 return self.format_number(operand1 / operand2)
+            
+    def extra_calculate(self, operand1, operator):
+        if operator == "%":
+            return self.format_number(operand1 / 100)
 
     def reset(self):
         self.operator = "+"
